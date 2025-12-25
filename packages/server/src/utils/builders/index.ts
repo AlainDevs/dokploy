@@ -104,6 +104,7 @@ export const mechanizeDockerContainer = async (
 		RestartPolicy,
 		Placement,
 		Labels,
+		ServiceLabels,
 		Mode,
 		RollbackConfig,
 		UpdateConfig,
@@ -127,6 +128,7 @@ export const mechanizeDockerContainer = async (
 	const settings: CreateServiceOptions = {
 		authconfig: authConfig,
 		Name: appName,
+		...(ServiceLabels && { Labels: ServiceLabels }),
 		TaskTemplate: {
 			ContainerSpec: {
 				HealthCheck,

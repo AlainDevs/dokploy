@@ -42,6 +42,7 @@ export const buildMariadb = async (mariadb: MariadbNested) => {
 		RestartPolicy,
 		Placement,
 		Labels,
+		ServiceLabels,
 		Mode,
 		RollbackConfig,
 		UpdateConfig,
@@ -68,6 +69,7 @@ export const buildMariadb = async (mariadb: MariadbNested) => {
 
 	const settings: CreateServiceOptions = {
 		Name: appName,
+		...(ServiceLabels && { Labels: ServiceLabels }),
 		TaskTemplate: {
 			ContainerSpec: {
 				HealthCheck,

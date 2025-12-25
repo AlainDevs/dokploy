@@ -192,6 +192,7 @@ const addSwarmSettings = z.object({
 	).nullable(),
 	modeSwarm: createStringToJSONSchema(ServiceModeSwarmSchema).nullable(),
 	labelsSwarm: createStringToJSONSchema(LabelsSwarmSchema).nullable(),
+	serviceLabelsSwarm: createStringToJSONSchema(LabelsSwarmSchema).nullable(),
 	networkSwarm: createStringToJSONSchema(NetworkSwarmSchema).nullable(),
 	stopGracePeriodSwarm: z.bigint().nullable(),
 	endpointSpecSwarm: createStringToJSONSchema(
@@ -251,6 +252,7 @@ export const AddSwarmSettings = ({ id, type }: Props) => {
 			rollbackConfigSwarm: null,
 			modeSwarm: null,
 			labelsSwarm: null,
+			serviceLabelsSwarm: null,
 			networkSwarm: null,
 			stopGracePeriodSwarm: null,
 			endpointSpecSwarm: null,
@@ -291,6 +293,9 @@ export const AddSwarmSettings = ({ id, type }: Props) => {
 				labelsSwarm: data.labelsSwarm
 					? JSON.stringify(data.labelsSwarm, null, 2)
 					: null,
+			serviceLabelsSwarm: data.serviceLabelsSwarm
+				? JSON.stringify(data.serviceLabelsSwarm, null, 2)
+				: null,
 				networkSwarm: data.networkSwarm
 					? JSON.stringify(data.networkSwarm, null, 2)
 					: null,
@@ -317,6 +322,7 @@ export const AddSwarmSettings = ({ id, type }: Props) => {
 			rollbackConfigSwarm: data.rollbackConfigSwarm,
 			modeSwarm: data.modeSwarm,
 			labelsSwarm: data.labelsSwarm,
+			serviceLabelsSwarm: data.serviceLabelsSwarm,
 			networkSwarm: data.networkSwarm,
 			stopGracePeriodSwarm: data.stopGracePeriodSwarm ?? null,
 			endpointSpecSwarm: data.endpointSpecSwarm,
@@ -819,6 +825,59 @@ export const AddSwarmSettings = ({ id, type }: Props) => {
 								</FormItem>
 							)}
 						/>
+				<FormField
+					control={form.control}
+					name="serviceLabelsSwarm"
+					render={({ field }) => (
+						<FormItem className="relative ">
+							<FormLabel>Service Labels (for Traefik)</FormLabel>
+							<TooltipProvider delayDuration={0}>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<FormDescription className="break-all w-fit flex flex-row gap-1 items-center">
+											Service-level labels for Traefik
+											<HelpCircle className="size-4 text-muted-foreground" />
+										</FormDescription>
+									</TooltipTrigger>
+									<TooltipContent
+										className="w-full z-[999]"
+										align="start"
+										side="bottom"
+									>
+										<code>
+											<pre>
+												{`{
+	[name: string]: string;
+}
+
+Service-level labels visible to Traefik in Swarm mode.
+Use this field for Traefik routing configuration.`}
+											</pre>
+										</code>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
+							<FormControl>
+								<CodeEditor
+									language="json"
+									placeholder={`{
+	"traefik.enable" : "true",
+	"traefik.http.routers.myapp.rule" : "Host(\\\`example.com\\\`)",
+	"traefik.http.routers.myapp.entrypoints" : "websecure",
+	"traefik.http.routers.myapp.tls.certresolver" : "letsencrypt",
+	"traefik.http.services.myapp.loadbalancer.server.port" : "3000"
+}`}
+									className="h-[20rem] font-mono"
+									{...field}
+									value={field?.value || ""}
+								/>
+							</FormControl>
+							<pre>
+								<FormMessage />
+							</pre>
+						</FormItem>
+					)}
+				/>
 						<FormField
 							control={form.control}
 							name="stopGracePeriodSwarm"

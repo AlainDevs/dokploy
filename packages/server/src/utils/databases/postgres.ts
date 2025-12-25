@@ -41,6 +41,7 @@ export const buildPostgres = async (postgres: PostgresNested) => {
 		RestartPolicy,
 		Placement,
 		Labels,
+		ServiceLabels,
 		Mode,
 		RollbackConfig,
 		UpdateConfig,
@@ -67,6 +68,7 @@ export const buildPostgres = async (postgres: PostgresNested) => {
 
 	const settings: CreateServiceOptions = {
 		Name: appName,
+		...(ServiceLabels && { Labels: ServiceLabels }),
 		TaskTemplate: {
 			ContainerSpec: {
 				HealthCheck,

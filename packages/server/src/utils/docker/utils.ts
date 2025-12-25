@@ -503,6 +503,7 @@ export const generateConfigContainer = (
 		rollbackConfigSwarm,
 		modeSwarm,
 		labelsSwarm,
+		serviceLabelsSwarm,
 		replicas,
 		mounts,
 		networkSwarm,
@@ -536,6 +537,9 @@ export const generateConfigContainer = (
 				}),
 		...(labelsSwarm && {
 			Labels: labelsSwarm,
+		}),
+		...(serviceLabelsSwarm && {
+			ServiceLabels: serviceLabelsSwarm,
 		}),
 		...(modeSwarm
 			? {

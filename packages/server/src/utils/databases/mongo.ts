@@ -88,6 +88,7 @@ ${command ?? "wait $MONGOD_PID"}`;
 		RestartPolicy,
 		Placement,
 		Labels,
+		ServiceLabels,
 		Mode,
 		RollbackConfig,
 		UpdateConfig,
@@ -116,6 +117,7 @@ ${command ?? "wait $MONGOD_PID"}`;
 
 	const settings: CreateServiceOptions = {
 		Name: appName,
+		...(ServiceLabels && { Labels: ServiceLabels }),
 		TaskTemplate: {
 			ContainerSpec: {
 				HealthCheck,

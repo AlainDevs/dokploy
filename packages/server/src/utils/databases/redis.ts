@@ -39,6 +39,7 @@ export const buildRedis = async (redis: RedisNested) => {
 		RestartPolicy,
 		Placement,
 		Labels,
+		ServiceLabels,
 		Mode,
 		RollbackConfig,
 		UpdateConfig,
@@ -65,6 +66,7 @@ export const buildRedis = async (redis: RedisNested) => {
 
 	const settings: CreateServiceOptions = {
 		Name: appName,
+		...(ServiceLabels && { Labels: ServiceLabels }),
 		TaskTemplate: {
 			ContainerSpec: {
 				HealthCheck,
