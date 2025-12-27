@@ -45,4 +45,3 @@ yarn-error.log*
 
 .db
 .env.production
-install.sh
